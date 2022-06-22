@@ -2,6 +2,8 @@ package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +12,18 @@ import java.util.Optional;
  * ctrl + shift + T : 테스트 자동으로 만들어줌
  */
 
+
+// 스프링이 올라올 때, 스프링이 서비스네 하고 스프링 컨테이너에 MemberService 스프링빈 등록
+@Service
 public class MemberService {
     private final MemberRepository memberRepository;
 
+    /**
+     * 생성자에 @AutoWired 를 하면 스프링 컨테이너에 있는 MemberRepository 객체를 엮어줌
+     * 의존 관계를 스프링이 주입함 (Dependency Injection)
+     * Controller -> Service -> Repository
+     */
+    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
