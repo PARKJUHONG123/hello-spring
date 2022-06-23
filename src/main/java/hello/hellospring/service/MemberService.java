@@ -14,7 +14,7 @@ import java.util.Optional;
 
 
 // 스프링이 올라올 때, 스프링이 서비스네 하고 스프링 컨테이너에 MemberService 스프링빈 등록
-@Service
+//@Service
 public class MemberService {
     private final MemberRepository memberRepository;
 
@@ -23,7 +23,7 @@ public class MemberService {
      * 의존 관계를 스프링이 주입함 (Dependency Injection)
      * Controller -> Service -> Repository
      */
-    @Autowired
+//    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }

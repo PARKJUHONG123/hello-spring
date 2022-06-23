@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 
 
 // 스프링이 @Controller 어노테이션이 있으면, 스프링 컨테이너에 MemberController 객체를 생성해서 관리를 함 (스프링빈으로)
-
 @Controller
 public class MemberController {
 
@@ -24,6 +23,25 @@ public class MemberController {
 
     private final MemberService memberService;
 
+
+    /**
+     * 1. 필드 주입
+     * @Autowired private MemberService memberService;
+     */
+
+    /**
+     * 2. Setter 주입
+     * @Autowired
+     * public void setMemberService(MemberService memberService) {
+     *     this.memberService = memberService;
+     * }
+     *
+     * public 하게 노출되어 있기 때문에 실행 중에 setMemberService 내용을 변경할 수 있음
+     * bean 은 한번 생성되면 바꿀 필요가 없기 때문에 생성자 주입이 가장 권고됨
+     */
+    // 2. Setter 주입
+    
+    // 3. 생성자 주입
     @Autowired
     public MemberController(MemberService memberService) { // 따라서 MemberService 에도 @Service 를 추가해줘야 함
         this.memberService = memberService;
