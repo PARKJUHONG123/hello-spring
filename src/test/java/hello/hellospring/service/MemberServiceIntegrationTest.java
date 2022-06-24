@@ -2,47 +2,46 @@ package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.MemoryMemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * 순수한 단위 테스트
- * 스프링 컨테이너 없이 진행할 수 있음
- * 양질의 테스트일 가능성이 높음
+ * 통합 테스트
+ * 스프링 컨테이너까지 올리면서 하는 테스트
+ * 
+ * @SpringBootTest : 스프링 컨테이너와 테스트를 함께 진행함 (실제로 스프링 컨테이너가 올라감)
+ * @Transactional 로 인해서 테스트 시작 전에 트랜잭션을 시작하고, 테스트 완료 후에 항상 rollback
  */
-class MemberServiceTest {
+
+@SpringBootTest
+@Transactional
+class MemberServiceIntegrationTest {
 
     // MemberService memberService = new MemberService(memberRepository);
     // MemoryMemberRepository memoryMemberRepository = new MemoryMemberRepository();
     // MemoryMemberRepository 의 store 객체가 static 이기 때문에 지금은 문제가 안되지만
     // memberService 내의 memberRepository 와 위의 memoryMemberRepository 는 서로 다른 객체이기 때문에 위와 같이 사용되면 안됨
 
-    MemoryMemberRepository memoryMemberRepository;
-    MemberService memberService;
+    @Autowired MemberRepository memberRepository;
+    @Autowired MemberService memberService;
 
-    @BeforeEach
-    public void beforeEach() {
-        memoryMemberRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memoryMemberRepository);
-    }
-
-    @AfterEach
-    void afterEach() {
-        memoryMemberRepository.clearStore();
-    }
+//    @transactional 으로 인해서 작업 필요 없음
+//    @AfterEach
+//    void afterEach() {
+//        memoryMemberRepository.clearStore();
+//    }
 
     @Test
+    // @Commit 을 하게 되면 @Transactional 상관없이 commit 이 되긴 함
     void 회원가입() {
         // given
         Member member = new Member();
-        member.setName("hello");
+        member.setName("spring");
 
         // when
         Long saveId = memberService.join(member);
