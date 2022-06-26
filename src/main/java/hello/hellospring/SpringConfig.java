@@ -1,6 +1,7 @@
 package hello.hellospring;
 
 import hello.hellospring.repository.JdbcMemberRepository;
+import hello.hellospring.repository.JdbcTemplateMemberRepository;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import hello.hellospring.service.MemberService;
@@ -28,6 +29,7 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
+    // 스프링이 applications.properties 을 통해서 DataSource 를 DI
     private final DataSource dataSource;
 
     @Autowired
@@ -42,7 +44,8 @@ public class SpringConfig {
 
     @Bean
     public MemberRepository memberRepository() {
-        return new JdbcMemberRepository(dataSource);
+        return new JdbcTemplateMemberRepository(dataSource);
+        // return new JdbcMemberRepository(dataSource);
 
         // return new MemoryMemberRepository();
         // return new DbMemberRepository(); // 와 같이 기존 다른 코드를 일절 변경하지 않고 바꿀 수 있게 함
