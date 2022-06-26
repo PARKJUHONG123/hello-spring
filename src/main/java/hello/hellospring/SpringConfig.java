@@ -1,14 +1,12 @@
 package hello.hellospring;
 
-import hello.hellospring.repository.JdbcMemberRepository;
-import hello.hellospring.repository.JdbcTemplateMemberRepository;
-import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.MemoryMemberRepository;
+import hello.hellospring.repository.*;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 /**
@@ -30,12 +28,22 @@ import javax.sql.DataSource;
 public class SpringConfig {
 
     // 스프링이 applications.properties 을 통해서 DataSource 를 DI
-    private final DataSource dataSource;
+//    private final DataSource dataSource;
+//
+//    @Autowired
+//    public SpringConfig(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
 
+    // JPA 는 EntityManager 로 동작을 함
+    // 스프링 부트가 EntityManager 를 생성해줘서 우리는 Injection 받아서 사용함
+    // JPA 가 관리하는 EntityManager 를 Autowire
+    private final EntityManager em;
     @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public SpringConfig(EntityManager em) {
+        this.em = em;
     }
+
 
     @Bean
     public MemberService memberService() {
@@ -44,9 +52,10 @@ public class SpringConfig {
 
     @Bean
     public MemberRepository memberRepository() {
-        return new JdbcTemplateMemberRepository(dataSource);
-        // return new JdbcMemberRepository(dataSource);
+        return new JpaMemberRepository(em);
 
+        // return new JdbcTemplateMemberRepository(dataSource);
+        // return new JdbcMemberRepository(dataSource);
         // return new MemoryMemberRepository();
         // return new DbMemberRepository(); // 와 같이 기존 다른 코드를 일절 변경하지 않고 바꿀 수 있게 함
     }

@@ -4,6 +4,7 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,9 @@ import java.util.Optional;
 
 // 스프링이 올라올 때, 스프링이 서비스네 하고 스프링 컨테이너에 MemberService 스프링빈 등록
 //@Service
+
+// JPA 를 통해 데이터를 저장하고 변경하기 위해서는 @Transactional 어노테이션을 통해 명시를 해줘야 함
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
 

@@ -30,7 +30,7 @@ class MemberServiceIntegrationTest {
     @Autowired MemberRepository memberRepository;
     @Autowired MemberService memberService;
 
-//    @transactional 으로 인해서 작업 필요 없음
+//    @Transactional 으로 인해서 작업 필요 없음
 //    @AfterEach
 //    void afterEach() {
 //        memoryMemberRepository.clearStore();
