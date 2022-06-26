@@ -1,5 +1,6 @@
 package hello.hellospring;
 
+import hello.hellospring.aop.TimeTraceAop;
 import hello.hellospring.repository.*;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,13 @@ public class SpringConfig {
 //        // return new MemoryMemberRepository();
 //        // return new DbMemberRepository(); // 와 같이 기존 다른 코드를 일절 변경하지 않고 바꿀 수 있게 함
 //    }
+
+    
+    // package hello.hellospring.aop 의 TimeTraceAop 에 @Component 를 써서 스프링빈으로 생성해도 되지만
+    // SpringConfig 에 작성하는 것이 어떤 객체가 스프링빈으로 잡힐 건지 확인하기 좋음 
+    @Bean
+    public TimeTraceAop timeTraceAop() {
+        return new TimeTraceAop();
+    }
 
 }

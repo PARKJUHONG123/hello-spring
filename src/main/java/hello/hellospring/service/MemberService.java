@@ -11,6 +11,14 @@ import java.util.Optional;
 
 /**
  * ctrl + shift + T : 테스트 자동으로 만들어줌
+ *
+ * AOP
+ * Aspect Oriented Programming
+ * 공통 관심 사항 (cross-cutting concern) vs 핵심 관심 사항 (core concern) 분리
+ * - 공통 관심 사항 : 시간 측정 로직
+ * - 핵심 관심 사항 : 비즈니스 로직 (로그인, 회원 조회 등)
+ * 
+ * 시간 측정 로직을 한 군데에 다 모아놓고, 시간 측정 로직이 필요한 핵심 관심 사항에 각각 적용
  */
 
 
@@ -39,9 +47,20 @@ public class MemberService {
 
     public Long join(Member member) {
         // 요건 : 같은 이름이 있는 중복 회원은 안된다 (ctrl + alt + v 누르면 변수가 자동 생성됨)
-        validateDuplicateMember(member); // 중복 회원 검증
-        memberRepository.save(member);
-        return member.getId();
+
+        long start = System.currentTimeMillis();
+
+        try {
+            validateDuplicateMember(member); // 중복 회원 검증
+            memberRepository.save(member);
+            return member.getId();
+        }
+        finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("join = " + timeMs + "ms");
+        }
+
     }
 
     private void validateDuplicateMember(Member member) {
